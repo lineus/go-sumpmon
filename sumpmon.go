@@ -5,6 +5,7 @@ import (
 	"log"
 	"time"
 
+	"github.com/lineus/go-sqlitelogs"
 	_ "github.com/mattn/go-sqlite3" // use sqlite3
 )
 
@@ -29,7 +30,7 @@ func (logger Logger) SaveLog(action string, result string) (sql.Result, error) {
 }
 
 // Init - connect to the db and get your Logger instance
-func Init(dsn string) (Logger, error) {
+func Init(dsn string) (sqlitelogs.SqliteLogger, error) {
 	var l Logger
 	db, err := sql.Open("sqlite3", dsn)
 	l.db = db

@@ -36,12 +36,14 @@ func (logger Logger) Alive() bool {
 
 // GetAllLogs - returns a slice of SqliteLogs, all of them in fact.
 func (logger Logger) GetAllLogs() []sqlitelogs.SqliteLog {
-	return []sqlitelogs.SqliteLog
+	ret := make([]sqlitelogs.SqliteLog)
+	return ret
 }
 
 // GetLogsBetween - return all of the logs betwixt two times
 func (logger Logger) GetLogsBetween(start time.Time, end time.Time) []sqlitelogs.SqliteLog {
-	return []sqlitelogs.SqliteLog
+	ret := make([]sqlitelogs.SqliteLog)
+	return ret
 }
 
 // Init - connect to the db and get your Logger instance

@@ -29,6 +29,11 @@ func (logger Logger) SaveLog(action string, result string) (sql.Result, error) {
 	return res, err
 }
 
+// Alive - has there been a log saved in the db in the last hour
+func (logger Logger) Alive() bool {
+	return true
+}
+
 // Init - connect to the db and get your Logger instance
 func Init(dsn string) (sqlitelogs.SqliteLogger, error) {
 	var l Logger

@@ -36,7 +36,7 @@ func (logger Logger) Alive() bool {
 
 // GetAllLogs - returns a slice of SqliteLogs, all of them in fact.
 func (logger Logger) GetAllLogs() []sqlitelogs.SqliteLog {
-	return []
+	return []sqlitelogs.SqliteLog
 }
 
 // Init - connect to the db and get your Logger instance

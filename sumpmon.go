@@ -39,6 +39,11 @@ func (logger Logger) GetAllLogs() []sqlitelogs.SqliteLog {
 	return []sqlitelogs.SqliteLog
 }
 
+// GetLogsBetween - return all of the logs betwixt two times
+func (logger Logger) GetLogsBetween(start time.Time, end time.Time) []sqlitelogs.SqliteLog {
+	return []sqlitelogs.SqliteLog
+}
+
 // Init - connect to the db and get your Logger instance
 func Init(dsn string) (sqlitelogs.SqliteLogger, error) {
 	var l Logger

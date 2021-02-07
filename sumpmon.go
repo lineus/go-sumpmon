@@ -2,6 +2,8 @@ package sumpmon
 
 import (
 	"database/sql"
+	"errors"
+	"fmt"
 	"log"
 	"time"
 
@@ -31,7 +33,24 @@ func (logger Logger) SaveLog(action string, result string) (sql.Result, error) {
 
 // Alive - has there been a log saved in the db in the last hour
 func (logger Logger) Alive() bool {
-	return true
+	stmt, err := logger.db.Prepare("SELECT epoch FROM logs ORDER BY id DESC LIMIT 1;")
+	if err != nil {
+		log.Fatal("Prepare Failed: ", err)
+	}
+
+	var epoch int64
+	err = stmt.QueryRow().Scan(&epoch)
+	if err != nil && errors.Is(err, sql.ErrNoRows) {
+		fmt.Println("error error")
+		epoch = time.Now().Unix()
+	}
+
+	fmt.Printf("epoch: %+v", epoch)
+	last := time.Unix(epoch, 0)
+	now := time.Now()
+	fmt.Println("last: ", last)
+	fmt.Println("now: ", now)
+	return last.After(now.Add(-60 * time.Minute))
 }
 
 // GetAllLogs - returns a slice of SqliteLogs, all of them in fact.

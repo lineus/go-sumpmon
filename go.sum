@@ -1,6 +1,4 @@
-github.com/lineus/go-sqlitelogs v0.0.0-20210206140521-172be532878e h1:9mP1Ha/OEudXOI39Y83Fehvwa7mPwDFetpMjbApBtws=
-github.com/lineus/go-sqlitelogs v0.0.0-20210206140521-172be532878e/go.mod h1:zci2zBmYrJkJprr2Y1QukHPZEqa1jOJ60iaFHwDmelc=
-github.com/lineus/go-sqlitelogs v0.0.0-20210206143055-f6bb430e0d0f h1:vxuSdgu3S2ZH7j/jWu8gW/74wFtmyibKwXd+baQ6nYE=
-github.com/lineus/go-sqlitelogs v0.0.0-20210206143055-f6bb430e0d0f/go.mod h1:zci2zBmYrJkJprr2Y1QukHPZEqa1jOJ60iaFHwDmelc=
 github.com/lineus/go-sqlitelogs v0.0.0-20210206143214-151410afc1de h1:VWhSZNLbEZXZvo4O2yzcyOe/NL9VvEhFvKiq6eUEHuc=
 github.com/lineus/go-sqlitelogs v0.0.0-20210206143214-151410afc1de/go.mod h1:zci2zBmYrJkJprr2Y1QukHPZEqa1jOJ60iaFHwDmelc=
+github.com/mattn/go-sqlite3 v1.14.6 h1:dNPt6NO46WmLVt2DLNpwczCmdV5boIZ6g/tlDrlRUbg=
+github.com/mattn/go-sqlite3 v1.14.6/go.mod h1:NyWgC/yNuGj7Q9rpYnZvas74GogHl5/Z4A/KQRfk6bU=

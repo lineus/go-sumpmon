@@ -3,7 +3,6 @@ package sumpmon
 import (
 	"database/sql"
 	"errors"
-	"fmt"
 	"log"
 	"time"
 
@@ -41,15 +40,11 @@ func (logger Logger) Alive() bool {
 	var epoch int64
 	err = stmt.QueryRow().Scan(&epoch)
 	if err != nil && errors.Is(err, sql.ErrNoRows) {
-		fmt.Println("error error")
 		epoch = time.Now().Unix()
 	}
 
-	fmt.Printf("epoch: %+v", epoch)
 	last := time.Unix(epoch, 0)
 	now := time.Now()
-	fmt.Println("last: ", last)
-	fmt.Println("now: ", now)
 	return last.After(now.Add(-60 * time.Minute))
 }
 

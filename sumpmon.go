@@ -51,44 +51,40 @@ func (logger Logger) Alive() bool {
 }
 
 // GetAllLogs - returns a slice of SqliteLogs, all of them in fact.
-func (logger Logger) GetAllLogs() []sqlitelogs.SqliteLog {
+func (logger Logger) GetAllLogs() ([]sqlitelogs.SqliteLog, error) {
 	stmt, err := logger.db.Prepare("SELECT * FROM logs;")
 	if err != nil {
-		log.Fatal("Prepare Failed: ", err)
+		return nil, err
 	}
 
 	cursor, err := stmt.Query()
 	if err != nil {
-		log.Fatal("Query Failed: ", err)
+		return nil, err
 	}
 
-	ret := make([]sqlitelogs.SqliteLog, 0)
+	defer cursor.Close()
 
-	for cursor.Next() {
-		var i int
-		var e int64
-		var a string
-		var r string
-
-		if err := cursor.Scan(&i, &e, &a, &r); err != nil {
-			log.Fatal("Scan Failed: ", err)
-		}
-
-		ret = append(ret, sqlitelogs.SqliteLog{
-			ID:     i,
-			Epoch:  e,
-			Action: a,
-			Result: r,
-		})
-	}
-
-	return ret
+	return cursorToSlice(cursor)
 }
 
 // GetLogsBetween - return all of the logs betwixt two times
-func (logger Logger) GetLogsBetween(start time.Time, end time.Time) []sqlitelogs.SqliteLog {
-	ret := make([]sqlitelogs.SqliteLog, 1)
-	return ret
+func (logger Logger) GetLogsBetween(start time.Time, end time.Time) ([]sqlitelogs.SqliteLog, error) {
+	s := start.Unix()
+	e := end.Unix()
+
+	stmt, err := logger.db.Prepare("SELECT * FROM logs WHERE epoch BETWEEN ? AND ?;")
+	if err != nil {
+		return nil, err
+	}
+
+	cursor, err := stmt.Query(s, e)
+	if err != nil {
+		return nil, err
+	}
+
+	defer cursor.Close()
+
+	return cursorToSlice(cursor)
 }
 
 // Init - connect to the db and get your Logger instance
@@ -109,4 +105,28 @@ func Init(dsn string) (sqlitelogs.SqliteLogger, error) {
 	}
 
 	return l, err
+}
+
+func cursorToSlice(cursor *sql.Rows) ([]sqlitelogs.SqliteLog, error) {
+	ret := make([]sqlitelogs.SqliteLog, 0)
+	var err error
+	for cursor.Next() {
+		var i int
+		var e int64
+		var a string
+		var r string
+
+		err = cursor.Scan(&i, &e, &a, &r)
+		if err != nil {
+			return ret, err
+		}
+		ret = append(ret, sqlitelogs.SqliteLog{
+			ID:     i,
+			Epoch:  e,
+			Action: a,
+			Result: r,
+		})
+	}
+
+	return ret, err
 }

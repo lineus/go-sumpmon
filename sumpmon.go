@@ -41,6 +41,8 @@ func (logger Logger) Alive() bool {
 	err = stmt.QueryRow().Scan(&epoch)
 	if err != nil && errors.Is(err, sql.ErrNoRows) {
 		epoch = time.Now().Unix()
+	} else if err != nil {
+		log.Fatal("Query Failed: ", err)
 	}
 
 	last := time.Unix(epoch, 0)

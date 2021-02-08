@@ -58,7 +58,36 @@ func (logger Logger) GetAllLogs() []sqlitelogs.SqliteLog {
 
 // GetLogsBetween - return all of the logs betwixt two times
 func (logger Logger) GetLogsBetween(start time.Time, end time.Time) []sqlitelogs.SqliteLog {
-	ret := make([]sqlitelogs.SqliteLog, 1)
+	stmt, err := logger.db.Prepare("SELECT * FROM logs;")
+	if err != nil {
+		log.Fatal("Prepare Failed: ", err)
+	}
+
+	cursor, err := stmt.Query()
+	if err != nil {
+		log.Fatal("Query Failed: ", err)
+	}
+
+	ret := make([]sqlitelogs.SqliteLog, 0)
+
+	for cursor.Next() {
+		var i int
+		var e int64
+		var a string
+		var r string
+
+		if err := cursor.Scan(&i, &e, &a, &r); err != nil {
+			log.Fatal("Scan Failed: ", err)
+		}
+
+		ret = append(ret, sqlitelogs.SqliteLog{
+			ID:     i,
+			Epoch:  e,
+			Action: a,
+			Result: r,
+		})
+	}
+
 	return ret
 }
 

@@ -69,15 +69,12 @@ func (logger Logger) GetAllLogs() ([]sqlitelogs.SqliteLog, error) {
 
 // GetLogsBetween - return all of the logs betwixt two times
 func (logger Logger) GetLogsBetween(start time.Time, end time.Time) ([]sqlitelogs.SqliteLog, error) {
-	s := start.Unix()
-	e := end.Unix()
-
 	stmt, err := logger.db.Prepare("SELECT * FROM logs WHERE epoch BETWEEN ? AND ?;")
 	if err != nil {
 		return nil, err
 	}
 
-	cursor, err := stmt.Query(s, e)
+	cursor, err := stmt.Query(start.Unix(), end.Unix())
 	if err != nil {
 		return nil, err
 	}
